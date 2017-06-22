@@ -2,7 +2,7 @@
 //  Data.swift
 //  Interview Practice
 //
-//  Created by Lu Ao on 6/20/17.
+//  Created by Lu Ao on 6/21/17.
 //  Copyright © 2017 Lu Ao. All rights reserved.
 //
 
@@ -10,25 +10,28 @@ import Foundation
 
 class Data: NSObject{
     
+    private(set) var id = String()
+    private(set) var hours = String()
+    private(set) var url = String()
+    private(set) var descriptions = String()
+    private(set) var title = String()
+    private(set) var popular = String()
+    private(set) var new = String()
+    private(set) var rating = String()
+    private(set) var n_reviews = String()
+    private(set) var price_range = String()
     
-    private(set) var dataDictionary = [[String:String]]()
-    init(_ dictionary: NSDictionary){
-        guard let data = dictionary["data"] else{return}
-        let dataArr = data as! [AnyObject]
-        for info in dataArr{
-            var infoString = [String:String]()
-            infoString[keys.id] = info[keys.id] as? String
-            infoString[keys.hours] = info[keys.hours] as? String
-            infoString[keys.url] = info[keys.url] as? String
-            infoString[keys.description] = info[keys.description] as? String
-            infoString[keys.title] = info[keys.title] as? String
-            infoString[keys.popular] = String(describing: info[keys.popular] as? Int)
-            infoString[keys.new] = String(describing: info[keys.new] as? Int)
-            infoString[keys.rating] = String(describing: info[keys.rating] as? Int)
-            infoString[keys.n_reviews] = String(describing: info[keys.n_reviews] as? Int)
-            infoString[keys.price_range] = String(describing: info[keys.price_range] as? Int)
-            dataDictionary.append(infoString)
-        }
+    init(_ serverObject: AnyObject){
+        self.id = serverObject[keys.id] as! String
+        self.hours = serverObject[keys.hours] as! String
+        self.url = serverObject[keys.url] as! String
+        self.descriptions = serverObject[keys.description] as! String
+        self.title = serverObject[keys.title] as! String
+        self.popular = String(describing: serverObject[keys.popular] as! Int)
+        self.new = String(describing: serverObject[keys.new] as! Int)
+        self.rating = String(describing: serverObject[keys.rating] as! Int)
+        self.n_reviews = String(describing: serverObject[keys.n_reviews] as! Int)
+        self.price_range = String(describing: serverObject[keys.price_range] as! Int)
     }
     
     struct keys{
@@ -44,4 +47,3 @@ class Data: NSObject{
         static let price_range = "price_range"//: 3
     }
 }
-

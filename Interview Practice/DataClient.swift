@@ -14,7 +14,7 @@ class DataClient{
     private init() {}
     
     /** Fetch Data from server using REST API GET */
-    internal func getData(success:@escaping (Data) -> Void, fail: () -> Void){
+    internal func getData(success:@escaping ([AnyObject]) -> Void, fail: () -> Void){
         let urlString = "https://fetchy-interview.herokuapp.com/api/placedata"
         let url = URL(string: urlString)!
         let request = URLRequest(url: url)
@@ -22,12 +22,26 @@ class DataClient{
         let task : URLSessionDataTask = session.dataTask(with: request) { (dataOrNil, response, error) in
             if let data = dataOrNil{
                 if let reponseDictionary = try? JSONSerialization.jsonObject(with: data, options: []) as! NSDictionary{
-                    success(Data.init(reponseDictionary))
+                    guard let data = reponseDictionary["data"] else{return}
+                    let dataArr = data as! [AnyObject]
+                    success(dataArr)
                 }else{
                     print("error")
                 }
             }
         }
         task.resume()
+    }
+    internal func getFeeds(done:@escaping ([Data]) -> Void){
+        var datas = [Data]()
+        getData(success: { (dataArr) in
+            for info in dataArr{
+                let data = Data.init(info)
+                datas.append(data)
+            }
+            done(datas)
+        }) { 
+            print("Error: There is no data")
+        }
     }
 }
